@@ -56,7 +56,7 @@ export default function App() {
           <KeyboardButton value="+" type="operation" />
         </View>
         <View style={styles.keysRow}>
-          <KeyboardButton value="0" type="default" />
+          <KeyboardButton value="0" type="default" isZero />
           <KeyboardButton value="," type="default" />
           <KeyboardButton value="=" type="result" />
         </View>
@@ -69,10 +69,12 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingBottom: 45,
+    paddingTop: 30,
     backgroundColor: "#000000",
   },
   visor: {
-    flex: 3,
+    flex: 2,
     // backgroundColor: "blue",
   },
   keyboard: {

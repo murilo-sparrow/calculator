@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View } from "react-native";
 
 const buttonColors = {
-  default: "#202020",
-  operation: "#038fff",
-  result: "#2ed058",
+  default: "rgb(32, 32, 32)",
+  operation: "rgb(62, 142, 247)",
+  result: "rgb(103, 206, 103)",
 };
 
 export type buttonTypes = keyof typeof buttonColors;
@@ -11,11 +11,22 @@ export type buttonTypes = keyof typeof buttonColors;
 type keyboardButtonProps = {
   value: string;
   type: buttonTypes;
+  isZero?: boolean;
 };
 
-export default function KeyboardButton({ value, type }: keyboardButtonProps) {
+export default function KeyboardButton({
+  value,
+  type,
+  isZero,
+}: keyboardButtonProps) {
   return (
-    <View style={[styles.container, { backgroundColor: buttonColors[type] }]}>
+    <View
+      style={[
+        styles.container,
+        { backgroundColor: buttonColors[type] },
+        isZero ? styles.zero : undefined,
+      ]}
+    >
       <Text style={styles.text}>{value}</Text>
     </View>
   );
@@ -23,15 +34,21 @@ export default function KeyboardButton({ value, type }: keyboardButtonProps) {
 
 const styles = StyleSheet.create({
   container: {
-    margin: 3,
-    width: 68,
-    height: 68,
-    borderRadius: 34,
+    margin: 5,
+    width: 80,
+    height: 80,
+    borderRadius: 40,
     alignItems: "center",
     justifyContent: "center",
+    borderStartWidth: 0.7,
+    borderEndWidth: 0.5,
+    borderColor: "#9494948c",
   },
   text: {
     color: "#ffffff",
-    fontSize: 40,
+    fontSize: 30,
+  },
+  zero: {
+    width: 170,
   },
 });
