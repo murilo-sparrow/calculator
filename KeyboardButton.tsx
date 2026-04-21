@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
-const buttonColors = {
+export const buttonColors = {
   default: "rgb(32, 32, 32)",
   operation: "rgb(62, 142, 247)",
   result: "rgb(103, 206, 103)",
@@ -12,23 +12,43 @@ type keyboardButtonProps = {
   value: string;
   type: buttonTypes;
   isZero?: boolean;
+  isEquals?: boolean;
+  equation: String[];
+  setEquation: React.Dispatch<React.SetStateAction<String[]>>;
 };
 
 export default function KeyboardButton({
   value,
   type,
   isZero,
+  isEquals,
+  equation: equation,
+  setEquation: setEquation,
 }: keyboardButtonProps) {
+  if (isEquals) {
+    if (equation.length > 0) {
+      value = "=";
+    } else {
+      value = "C";
+    }
+  }
+
   return (
-    <View
-      style={[
-        styles.container,
-        { backgroundColor: buttonColors[type] },
-        isZero ? styles.zero : undefined,
-      ]}
+    <Pressable
+      onPress={() => {
+        setEquation((equation) => [...equation, value]);
+      }}
     >
-      <Text style={styles.text}>{value}</Text>
-    </View>
+      <View
+        style={[
+          styles.container,
+          { backgroundColor: buttonColors[type] },
+          isZero ? styles.zero : undefined,
+        ]}
+      >
+        <Text style={styles.text}>{value}</Text>
+      </View>
+    </Pressable>
   );
 }
 
