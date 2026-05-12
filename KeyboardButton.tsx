@@ -1,4 +1,5 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { calcular } from "./lib/calcular";
 
 export const buttonColors = {
   default: "rgb(32, 32, 32)",
@@ -15,6 +16,7 @@ type keyboardButtonProps = {
   isEquals?: boolean;
   equation: String[];
   setEquation: React.Dispatch<React.SetStateAction<String[]>>;
+  setResultado?: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export default function KeyboardButton({
@@ -22,21 +24,24 @@ export default function KeyboardButton({
   type,
   isZero,
   isEquals,
-  equation: equation,
-  setEquation: setEquation,
+  equation,
+  setEquation,
+  setResultado,
 }: keyboardButtonProps) {
-  if (isEquals) {
-    if (equation.length > 0) {
-      value = "=";
-    } else {
-      value = "C";
-    }
-  }
-
   return (
     <Pressable
       onPress={() => {
-        setEquation((equation) => [...equation, value]);
+        if (setResultado !== undefined) {
+          setResultado(
+            calcular(
+              equation.length <= 0
+                ? "0"
+                : equation.toString().replaceAll(",", "").replaceAll("x", "*"),
+            ).toString(),
+          );
+        } else {
+          setEquation((equation) => [...equation, value]);
+        }
       }}
     >
       <View

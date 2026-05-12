@@ -7,38 +7,11 @@ import {
   SafeAreaProvider,
 } from "react-native-safe-area-context";
 import { useState } from "react";
-
-// type calcKey = {
-//   symbol: string;
-//   type: buttonTypes;
-// };
-
-// const calcKeys: calcKey[] = [
-//   { symbol: "0", type: "default" },
-//   { symbol: "0", type: "default" },
-//   { symbol: "0", type: "default" },
-//   { symbol: "0", type: "default" },
-//   { symbol: "1", type: "default" },
-//   { symbol: "2", type: "default" },
-//   { symbol: "3", type: "default" },
-//   { symbol: "4", type: "default" },
-//   { symbol: "5", type: "default" },
-//   { symbol: "6", type: "default" },
-//   { symbol: "7", type: "default" },
-//   { symbol: "8", type: "default" },
-//   { symbol: "9", type: "default" },
-//   { symbol: "0", type: "default" },
-//   { symbol: ",", type: "default" },
-//   { symbol: "5", type: "default" },
-// ];
+import { calcular } from "./lib/calcular";
 
 export default function App() {
-  const [equation, setEquation] = useState<String[]>([]);
-  const [resultado, setResultado] = useState<number>(0);
-
-  function calculate() {
-    equation.forEach((v) => setResultado(resultado + Number(v)));
-  }
+  const [equacao, setEquacao] = useState<String[]>([]);
+  const [resultado, setResultado] = useState<string>("0");
 
   return (
     <SafeAreaProvider>
@@ -71,24 +44,36 @@ export default function App() {
                 />
               </View>
               <View style={styles.digitsView}>
-                <Text style={styles.digitsText}>{resultado}</Text>
+                <Text
+                  style={[
+                    styles.digitsText,
+                    ,
+                    resultado.length > 7 && resultado.length <= 18
+                      ? { fontSize: 50 }
+                      : resultado.length > 18
+                        ? { fontSize: 25 }
+                        : {},
+                  ]}
+                >
+                  {resultado}
+                </Text>
               </View>
               <View style={styles.equationView}>
                 <Text
                   style={[
                     styles.equationText,
-                    equation.length > 11 && equation.length <= 16
+                    equacao.length > 11 && equacao.length <= 16
                       ? { fontSize: 30 }
-                      : equation.length > 16
+                      : equacao.length > 16
                         ? { fontSize: 20 }
                         : {},
                   ]}
                 >
-                  {equation}
+                  {equacao}
                 </Text>
                 <Ionicons
                   onPress={() =>
-                    setEquation((equation) => equation.slice(0, -1))
+                    setEquacao((equation) => equation.slice(0, -1))
                   }
                   name="backspace"
                   size={32}
@@ -101,104 +86,104 @@ export default function App() {
                 <KeyboardButton
                   value="("
                   type="default"
-                  equation={equation}
-                  setEquation={setEquation}
+                  equation={equacao}
+                  setEquation={setEquacao}
                 />
                 <KeyboardButton
                   value=")"
                   type="default"
-                  equation={equation}
-                  setEquation={setEquation}
+                  equation={equacao}
+                  setEquation={setEquacao}
                 />
                 <KeyboardButton
                   value="%"
                   type="default"
-                  equation={equation}
-                  setEquation={setEquation}
+                  equation={equacao}
+                  setEquation={setEquacao}
                 />
                 <KeyboardButton
                   value="/"
                   type="operation"
-                  equation={equation}
-                  setEquation={setEquation}
+                  equation={equacao}
+                  setEquation={setEquacao}
                 />
               </View>
               <View style={styles.keysRow}>
                 <KeyboardButton
                   value="7"
                   type="default"
-                  equation={equation}
-                  setEquation={setEquation}
+                  equation={equacao}
+                  setEquation={setEquacao}
                 />
                 <KeyboardButton
                   value="8"
                   type="default"
-                  equation={equation}
-                  setEquation={setEquation}
+                  equation={equacao}
+                  setEquation={setEquacao}
                 />
                 <KeyboardButton
                   value="9"
                   type="default"
-                  equation={equation}
-                  setEquation={setEquation}
+                  equation={equacao}
+                  setEquation={setEquacao}
                 />
                 <KeyboardButton
                   value="x"
                   type="operation"
-                  equation={equation}
-                  setEquation={setEquation}
+                  equation={equacao}
+                  setEquation={setEquacao}
                 />
               </View>
               <View style={styles.keysRow}>
                 <KeyboardButton
                   value="4"
                   type="default"
-                  equation={equation}
-                  setEquation={setEquation}
+                  equation={equacao}
+                  setEquation={setEquacao}
                 />
                 <KeyboardButton
                   value="5"
                   type="default"
-                  equation={equation}
-                  setEquation={setEquation}
+                  equation={equacao}
+                  setEquation={setEquacao}
                 />
                 <KeyboardButton
                   value="6"
                   type="default"
-                  equation={equation}
-                  setEquation={setEquation}
+                  equation={equacao}
+                  setEquation={setEquacao}
                 />
                 <KeyboardButton
                   value="-"
                   type="operation"
-                  equation={equation}
-                  setEquation={setEquation}
+                  equation={equacao}
+                  setEquation={setEquacao}
                 />
               </View>
               <View style={styles.keysRow}>
                 <KeyboardButton
                   value="1"
                   type="default"
-                  equation={equation}
-                  setEquation={setEquation}
+                  equation={equacao}
+                  setEquation={setEquacao}
                 />
                 <KeyboardButton
                   value="2"
                   type="default"
-                  equation={equation}
-                  setEquation={setEquation}
+                  equation={equacao}
+                  setEquation={setEquacao}
                 />
                 <KeyboardButton
                   value="3"
                   type="default"
-                  equation={equation}
-                  setEquation={setEquation}
+                  equation={equacao}
+                  setEquation={setEquacao}
                 />
                 <KeyboardButton
                   value="+"
                   type="operation"
-                  equation={equation}
-                  setEquation={setEquation}
+                  equation={equacao}
+                  setEquation={setEquacao}
                 />
               </View>
               <View style={styles.keysRow}>
@@ -206,21 +191,22 @@ export default function App() {
                   value="0"
                   type="default"
                   isZero
-                  equation={equation}
-                  setEquation={setEquation}
+                  equation={equacao}
+                  setEquation={setEquacao}
                 />
                 <KeyboardButton
-                  value=","
+                  value="."
                   type="default"
-                  equation={equation}
-                  setEquation={setEquation}
+                  equation={equacao}
+                  setEquation={setEquacao}
                 />
                 <KeyboardButton
                   value="="
                   type="result"
                   isEquals
-                  equation={equation}
-                  setEquation={setEquation}
+                  equation={equacao}
+                  setEquation={setEquacao}
+                  setResultado={setResultado}
                 />
               </View>
             </View>
@@ -274,7 +260,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "flex-end",
     justifyContent: "center",
-    // backgroundColor: "red",
   },
 
   digitsText: {
