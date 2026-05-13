@@ -13,32 +13,28 @@ type keyboardButtonProps = {
   value: string;
   type: buttonTypes;
   isZero?: boolean;
-  isEquals?: boolean;
-  equation: String[];
+  resultado?: string;
   setEquation: React.Dispatch<React.SetStateAction<String[]>>;
-  setResultado?: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export default function KeyboardButton({
   value,
   type,
   isZero,
-  isEquals,
-  equation,
+  resultado,
   setEquation,
-  setResultado,
 }: keyboardButtonProps) {
   return (
     <Pressable
       onPress={() => {
-        if (setResultado !== undefined) {
-          setResultado(
+        if (value === "C") {
+          setEquation((equation) => [""]);
+        } else if (value === "=") {
+          setEquation((equation) => [
             calcular(
-              equation.length <= 0
-                ? "0"
-                : equation.toString().replaceAll(",", "").replaceAll("x", "*"),
+              equation.toString().replaceAll(",", "").replaceAll("x", "*"),
             ),
-          );
+          ]);
         } else {
           setEquation((equation) => [...equation, value]);
         }

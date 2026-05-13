@@ -7,10 +7,13 @@ import {
   SafeAreaProvider,
 } from "react-native-safe-area-context";
 import { useState } from "react";
+import { calcular } from "./lib/calcular";
 
 export default function App() {
   const [equacao, setEquacao] = useState<String[]>([]);
-  const [resultado, setResultado] = useState<string>("0");
+  const resultado = calcular(
+    equacao.toString().replaceAll(",", "").replaceAll("x", "*"),
+  );
 
   return (
     <SafeAreaProvider>
@@ -85,25 +88,21 @@ export default function App() {
                 <KeyboardButton
                   value="("
                   type="default"
-                  equation={equacao}
                   setEquation={setEquacao}
                 />
                 <KeyboardButton
                   value=")"
                   type="default"
-                  equation={equacao}
                   setEquation={setEquacao}
                 />
                 <KeyboardButton
                   value="%"
                   type="default"
-                  equation={equacao}
                   setEquation={setEquacao}
                 />
                 <KeyboardButton
                   value="/"
                   type="operation"
-                  equation={equacao}
                   setEquation={setEquacao}
                 />
               </View>
@@ -111,25 +110,21 @@ export default function App() {
                 <KeyboardButton
                   value="7"
                   type="default"
-                  equation={equacao}
                   setEquation={setEquacao}
                 />
                 <KeyboardButton
                   value="8"
                   type="default"
-                  equation={equacao}
                   setEquation={setEquacao}
                 />
                 <KeyboardButton
                   value="9"
                   type="default"
-                  equation={equacao}
                   setEquation={setEquacao}
                 />
                 <KeyboardButton
                   value="x"
                   type="operation"
-                  equation={equacao}
                   setEquation={setEquacao}
                 />
               </View>
@@ -137,25 +132,21 @@ export default function App() {
                 <KeyboardButton
                   value="4"
                   type="default"
-                  equation={equacao}
                   setEquation={setEquacao}
                 />
                 <KeyboardButton
                   value="5"
                   type="default"
-                  equation={equacao}
                   setEquation={setEquacao}
                 />
                 <KeyboardButton
                   value="6"
                   type="default"
-                  equation={equacao}
                   setEquation={setEquacao}
                 />
                 <KeyboardButton
                   value="-"
                   type="operation"
-                  equation={equacao}
                   setEquation={setEquacao}
                 />
               </View>
@@ -163,25 +154,21 @@ export default function App() {
                 <KeyboardButton
                   value="1"
                   type="default"
-                  equation={equacao}
                   setEquation={setEquacao}
                 />
                 <KeyboardButton
                   value="2"
                   type="default"
-                  equation={equacao}
                   setEquation={setEquacao}
                 />
                 <KeyboardButton
                   value="3"
                   type="default"
-                  equation={equacao}
                   setEquation={setEquacao}
                 />
                 <KeyboardButton
                   value="+"
                   type="operation"
-                  equation={equacao}
                   setEquation={setEquacao}
                 />
               </View>
@@ -190,22 +177,17 @@ export default function App() {
                   value="0"
                   type="default"
                   isZero
-                  equation={equacao}
                   setEquation={setEquacao}
                 />
                 <KeyboardButton
                   value="."
                   type="default"
-                  equation={equacao}
                   setEquation={setEquacao}
                 />
                 <KeyboardButton
-                  value="="
+                  value={resultado === "" ? "C" : "="}
                   type="result"
-                  isEquals
-                  equation={equacao}
                   setEquation={setEquacao}
-                  setResultado={setResultado}
                 />
               </View>
             </View>

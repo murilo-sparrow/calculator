@@ -104,5 +104,5 @@ export function calcular(texto: string) {
   if (tokens.length > 0) {
     return tokens[0];
   }
-  return "Expressão Inválida";
+  return "";
 }
