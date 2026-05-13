@@ -37,7 +37,7 @@ export default function KeyboardButton({
               equation.length <= 0
                 ? "0"
                 : equation.toString().replaceAll(",", "").replaceAll("x", "*"),
-            ).toString(),
+            ),
           );
         } else {
           setEquation((equation) => [...equation, value]);

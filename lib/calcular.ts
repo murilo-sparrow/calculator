@@ -1,7 +1,10 @@
+import Decimal from "decimal.js";
+
 const regexDigito = "\\.\\d+|\\d+(?:\\.\\d*)?";
 const regexOperadorBin = "[-+*/]";
 const regexOperadorUni = "(?:!|(?<!%)%)";
 const regexGrupoInterno = `(${regexOperadorBin})(${regexDigito})|(${regexOperadorUni})`;
+const parenteses = `\\(([^()]+)\\)`;
 
 export function calcular(texto: string) {
   const regexValidacao = new RegExp(
@@ -10,11 +13,22 @@ export function calcular(texto: string) {
   );
 
   const regexInterno = new RegExp(regexGrupoInterno, "g");
-  const textoLimpo = texto.replaceAll(/\s+/g, "");
+  let textoLimpo = texto.replaceAll(/\s+/g, "");
+
+  let RegexParenteses = new RegExp(parenteses, "g");
+  let matcher = RegexParenteses.exec(textoLimpo);
+  while (matcher !== null) {
+    textoLimpo = textoLimpo.replace(
+      matcher[0],
+      calcular(matcher[1]).toString(),
+    );
+    RegexParenteses = new RegExp(parenteses, "g");
+    matcher = RegexParenteses.exec(textoLimpo);
+  }
 
   const tokens: string[] = [];
 
-  const matcher = regexValidacao.exec(textoLimpo);
+  matcher = regexValidacao.exec(textoLimpo);
   if (matcher !== null) {
     if (matcher[1] !== "") {
       tokens.push(matcher[1]);
@@ -33,48 +47,14 @@ export function calcular(texto: string) {
     }
   }
 
-  // abstract class operadorBin {
-  //   a: number;
-  //   b: number;
-
-  //   constructor(a: number, b: number) {
-  //     this.a = a;
-  //     this.b = b;
-  //   }
-
-  //   abstract operation(): number;
-  // }
-
-  // class soma extends operadorBin {
-  //   operation(): number {
-  //     return this.a + this.b;
-  //   }
-  // }
-
-  // class subtracao extends operadorBin {
-  //   operation(): number {
-  //     return this.a - this.b;
-  //   }
-  // }
-
-  // class multiplicacao extends operadorBin {
-  //   operation(): number {
-  //     return this.a * this.b;
-  //   }
-  // }
-
-  // class divisao extends operadorBin {
-  //   operation(): number {
-  //     return this.a / this.b;
-  //   }
-  // }
+  Decimal.set({ precision: 9 });
 
   for (
     let i = tokens.indexOf("%");
     i < tokens.length && i >= 0;
     i = tokens.indexOf("%", i)
   ) {
-    tokens[i - 1] = (Number.parseFloat(tokens[i - 1]) / 100).toString();
+    tokens[i - 1] = new Decimal(tokens[i - 1]).dividedBy("100").toString();
     tokens.splice(i, 1);
   }
 
@@ -83,9 +63,9 @@ export function calcular(texto: string) {
     i < tokens.length && i >= 0;
     i = tokens.indexOf("/", i)
   ) {
-    tokens[i - 1] = (
-      Number.parseFloat(tokens[i - 1]) / Number.parseFloat(tokens[i + 1])
-    ).toString();
+    tokens[i - 1] = new Decimal(tokens[i - 1])
+      .dividedBy(tokens[i + 1])
+      .toString();
     tokens.splice(i, 2);
   }
 
@@ -94,9 +74,7 @@ export function calcular(texto: string) {
     i < tokens.length && i >= 0;
     i = tokens.indexOf("*", i)
   ) {
-    tokens[i - 1] = (
-      Number.parseFloat(tokens[i - 1]) * Number.parseFloat(tokens[i + 1])
-    ).toString();
+    tokens[i - 1] = new Decimal(tokens[i - 1]).times(tokens[i + 1]).toString();
     tokens.splice(i, 2);
   }
 
@@ -106,7 +84,7 @@ export function calcular(texto: string) {
     i = tokens.indexOf("-", i)
   ) {
     tokens[i] = "+";
-    tokens[i + 1] = (-1 * Number.parseFloat(tokens[i + 1])).toString();
+    tokens[i + 1] = new Decimal(tokens[i + 1]).neg().toString();
   }
 
   for (
@@ -115,18 +93,16 @@ export function calcular(texto: string) {
     i = tokens.indexOf("+", i)
   ) {
     if (tokens[i - 1] === undefined) {
-      tokens[i - 1] = (0 + Number.parseFloat(tokens[i + 1])).toString();
+      tokens[i - 1] = tokens[i + 1];
       tokens.splice(i, 1);
     } else {
-      tokens[i - 1] = (
-        Number.parseFloat(tokens[i - 1]) + Number.parseFloat(tokens[i + 1])
-      ).toString();
+      tokens[i - 1] = new Decimal(tokens[i - 1]).plus(tokens[i + 1]).toString();
       tokens.splice(i, 2);
     }
   }
 
   if (tokens.length > 0) {
-    return Number.parseFloat(tokens[0]);
+    return tokens[0];
   }
   return "Expressão Inválida";
 }

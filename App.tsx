@@ -7,7 +7,6 @@ import {
   SafeAreaProvider,
 } from "react-native-safe-area-context";
 import { useState } from "react";
-import { calcular } from "./lib/calcular";
 
 export default function App() {
   const [equacao, setEquacao] = useState<String[]>([]);
