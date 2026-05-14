@@ -30,11 +30,11 @@ export default function KeyboardButton({
         if (value === "C") {
           setEquation((equation) => [""]);
         } else if (value === "=") {
-          setEquation((equation) => [
+          setEquation((equation) =>
             calcular(
               equation.toString().replaceAll(",", "").replaceAll("x", "*"),
-            ),
-          ]);
+            ).split(""),
+          );
         } else {
           setEquation((equation) => [...equation, value]);
         }
