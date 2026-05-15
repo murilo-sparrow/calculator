@@ -24,7 +24,7 @@ export default function KeyboardButton({
     <Pressable
       onPress={() => {
         if (value === "C") {
-          setEquation((equation) => [""]);
+          setEquation(() => [""]);
         } else if (value === "=") {
           setEquation((equation) =>
             calcular(

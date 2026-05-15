@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, View, Text } from "react-native";
-import KeyboardButton from "./KeyboardButton";
+import { StyleSheet, View, Text, FlatList } from "react-native";
+import KeyboardButton, { buttonTypes } from "./KeyboardButton";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {
   SafeAreaInsetsContext,
@@ -15,26 +15,26 @@ export default function App() {
     equacao.toString().replaceAll(",", "").replaceAll("x", "*"),
   );
 
-  let simbolos = [
-    "(",
-    ")",
-    "%",
-    "/",
-    "7",
-    "8",
-    "9",
-    "X",
-    "4",
-    "5",
-    "6",
-    "-",
-    "1",
-    "2",
-    "3",
-    "+",
-    "0",
-    ".",
-    resultado === "" ? "C" : "=",
+  const simbolos: { id: string; simbolo: string; tipo: buttonTypes }[] = [
+    { id: "0", simbolo: "(", tipo: "default" },
+    { id: "1", simbolo: ")", tipo: "default" },
+    { id: "2", simbolo: "%", tipo: "default" },
+    { id: "3", simbolo: "/", tipo: "operation" },
+    { id: "4", simbolo: "7", tipo: "default" },
+    { id: "5", simbolo: "8", tipo: "default" },
+    { id: "6", simbolo: "9", tipo: "default" },
+    { id: "7", simbolo: "x", tipo: "operation" },
+    { id: "8", simbolo: "4", tipo: "default" },
+    { id: "9", simbolo: "5", tipo: "default" },
+    { id: "10", simbolo: "6", tipo: "default" },
+    { id: "11", simbolo: "-", tipo: "operation" },
+    { id: "12", simbolo: "1", tipo: "default" },
+    { id: "13", simbolo: "2", tipo: "default" },
+    { id: "14", simbolo: "3", tipo: "default" },
+    { id: "15", simbolo: "+", tipo: "operation" },
+    { id: "16", simbolo: "0", tipo: "default" },
+    { id: "17", simbolo: ".", tipo: "default" },
+    { id: "18", simbolo: resultado === "" ? "C" : "=", tipo: "result" },
   ];
 
   return (
@@ -106,20 +106,18 @@ export default function App() {
               </View>
             </View>
             <View style={styles.keyboard}>
-              {simbolos.map((simbolo, index) => (
-                <KeyboardButton
-                  key={index}
-                  value={simbolo}
-                  type={
-                    index % 4 === 3
-                      ? "operation"
-                      : index === simbolos.length - 1
-                        ? "result"
-                        : "default"
-                  }
-                  setEquation={setEquacao}
-                />
-              ))}
+              <FlatList
+                data={simbolos}
+                keyExtractor={(simbolo) => simbolo.id}
+                numColumns={4}
+                renderItem={({ item }) => (
+                  <KeyboardButton
+                    value={item.simbolo}
+                    type={item.tipo}
+                    setEquation={setEquacao}
+                  />
+                )}
+              />
             </View>
             <StatusBar style="auto" />
           </View>
@@ -138,18 +136,15 @@ const styles = StyleSheet.create({
   visor: {
     flex: 2,
     paddingHorizontal: 15,
-    // backgroundColor: "blue",
   },
 
   buttonsView: {
     flexDirection: "row",
     alignItems: "baseline",
-    // backgroundColor: "yellow",
     paddingVertical: 5,
   },
 
   equationView: {
-    // backgroundColor: "green",
     flex: 3,
     flexDirection: "row",
     alignItems: "center",
@@ -183,13 +178,8 @@ const styles = StyleSheet.create({
 
   keyboard: {
     flex: 3,
-    // backgroundColor: "green",
     alignItems: "center",
     justifyContent: "flex-end",
-  },
-
-  keysRow: {
-    flexDirection: "row",
   },
 
   topIcons: { marginHorizontal: 7 },
