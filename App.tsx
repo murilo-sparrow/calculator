@@ -15,6 +15,28 @@ export default function App() {
     equacao.toString().replaceAll(",", "").replaceAll("x", "*"),
   );
 
+  let simbolos = [
+    "(",
+    ")",
+    "%",
+    "/",
+    "7",
+    "8",
+    "9",
+    "X",
+    "4",
+    "5",
+    "6",
+    "-",
+    "1",
+    "2",
+    "3",
+    "+",
+    "0",
+    ".",
+    resultado === "" ? "C" : "=",
+  ];
+
   return (
     <SafeAreaProvider>
       <SafeAreaInsetsContext.Consumer>
@@ -84,112 +106,20 @@ export default function App() {
               </View>
             </View>
             <View style={styles.keyboard}>
-              <View style={styles.keysRow}>
+              {simbolos.map((simbolo, index) => (
                 <KeyboardButton
-                  value="("
-                  type="default"
+                  key={index}
+                  value={simbolo}
+                  type={
+                    index % 4 === 3
+                      ? "operation"
+                      : index === simbolos.length - 1
+                        ? "result"
+                        : "default"
+                  }
                   setEquation={setEquacao}
                 />
-                <KeyboardButton
-                  value=")"
-                  type="default"
-                  setEquation={setEquacao}
-                />
-                <KeyboardButton
-                  value="%"
-                  type="default"
-                  setEquation={setEquacao}
-                />
-                <KeyboardButton
-                  value="/"
-                  type="operation"
-                  setEquation={setEquacao}
-                />
-              </View>
-              <View style={styles.keysRow}>
-                <KeyboardButton
-                  value="7"
-                  type="default"
-                  setEquation={setEquacao}
-                />
-                <KeyboardButton
-                  value="8"
-                  type="default"
-                  setEquation={setEquacao}
-                />
-                <KeyboardButton
-                  value="9"
-                  type="default"
-                  setEquation={setEquacao}
-                />
-                <KeyboardButton
-                  value="x"
-                  type="operation"
-                  setEquation={setEquacao}
-                />
-              </View>
-              <View style={styles.keysRow}>
-                <KeyboardButton
-                  value="4"
-                  type="default"
-                  setEquation={setEquacao}
-                />
-                <KeyboardButton
-                  value="5"
-                  type="default"
-                  setEquation={setEquacao}
-                />
-                <KeyboardButton
-                  value="6"
-                  type="default"
-                  setEquation={setEquacao}
-                />
-                <KeyboardButton
-                  value="-"
-                  type="operation"
-                  setEquation={setEquacao}
-                />
-              </View>
-              <View style={styles.keysRow}>
-                <KeyboardButton
-                  value="1"
-                  type="default"
-                  setEquation={setEquacao}
-                />
-                <KeyboardButton
-                  value="2"
-                  type="default"
-                  setEquation={setEquacao}
-                />
-                <KeyboardButton
-                  value="3"
-                  type="default"
-                  setEquation={setEquacao}
-                />
-                <KeyboardButton
-                  value="+"
-                  type="operation"
-                  setEquation={setEquacao}
-                />
-              </View>
-              <View style={styles.keysRow}>
-                <KeyboardButton
-                  value="0"
-                  type="default"
-                  isZero
-                  setEquation={setEquacao}
-                />
-                <KeyboardButton
-                  value="."
-                  type="default"
-                  setEquation={setEquacao}
-                />
-                <KeyboardButton
-                  value={resultado === "" ? "C" : "="}
-                  type="result"
-                  setEquation={setEquacao}
-                />
-              </View>
+              ))}
             </View>
             <StatusBar style="auto" />
           </View>
