@@ -12,16 +12,12 @@ export type buttonTypes = keyof typeof buttonColors;
 type keyboardButtonProps = {
   value: string;
   type: buttonTypes;
-  isZero?: boolean;
-  resultado?: string;
   setEquation: React.Dispatch<React.SetStateAction<String[]>>;
 };
 
 export default function KeyboardButton({
   value,
   type,
-  isZero,
-  resultado,
   setEquation,
 }: keyboardButtonProps) {
   return (
@@ -44,7 +40,7 @@ export default function KeyboardButton({
         style={[
           styles.container,
           { backgroundColor: buttonColors[type] },
-          isZero ? styles.zero : undefined,
+          value === "0" ? styles.zero : undefined,
         ]}
       >
         <Text style={styles.text}>{value}</Text>

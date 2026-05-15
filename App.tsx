@@ -176,7 +176,6 @@ export default function App() {
                 <KeyboardButton
                   value="0"
                   type="default"
-                  isZero
                   setEquation={setEquacao}
                 />
                 <KeyboardButton
